@@ -30,7 +30,7 @@ AudioContext::AudioContext()
   //av_log_set_level(AV_LOG_QUIET);
   
   // Register all formats and codecs
-  av_register_all(); // this should be done once only..
+  // av_register_all(); // deprecated in newer FFmpeg versions
 
   if (sizeof(float) != av_get_bytes_per_sample(AV_SAMPLE_FMT_FLT)) {
     throw EssentiaException("Unsupported float size");
@@ -45,7 +45,7 @@ int AudioContext::create(const std::string& filename,
 
   _filename = filename;
 
-  AVOutputFormat* av_output_format = av_guess_format(format.c_str(), 0, 0);
+  const AVOutputFormat* av_output_format = av_guess_format(format.c_str(), 0, 0);
   if (!av_output_format) {
     throw EssentiaException("Could not find a suitable output format for \"", filename, "\"");
   }
